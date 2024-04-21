@@ -1,67 +1,58 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import styled from "styled-components";
-import { useNavigate, Link } from "react-router-dom";
-import Logo from "../assets/logo.svg";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { registerRoute } from "../utils/APIRoutes";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import styled from 'styled-components';
+import { useNavigate, Link } from 'react-router-dom';
+import Logo from '../assets/logo.svg';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { registerRoute } from '../utils/APIRoutes';
 
 export default function Register() {
   const navigate = useNavigate();
   const toastOptions = {
-    position: "bottom-right",
+    position: 'bottom-right',
     autoClose: 8000,
     pauseOnHover: true,
     draggable: true,
-    theme: "dark",
+    theme: 'dark',
   };
   const [values, setValues] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
   });
 
   useEffect(() => {
     if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-      navigate("/");
+      navigate('/');
     }
   }, []);
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
   const handleValidation = () => {
     const { password, confirmPassword, username, email } = values;
     if (password !== confirmPassword) {
-      toast.error(
-        "Password and confirm password should be same.",
-        toastOptions
-      );
+      toast.error('Пароль и подтверждение пароля должны совпадать.', toastOptions);
       return false;
     } else if (username.length < 3) {
-      toast.error(
-        "Username should be greater than 3 characters.",
-        toastOptions
-      );
+      toast.error('Имя пользователя должно содержать не менее 3 символов.', toastOptions);
       return false;
     } else if (password.length < 8) {
-      toast.error(
-        "Password should be equal or greater than 8 characters.",
-        toastOptions
-      );
+      toast.error('Пароль должен содержать не менее 8 символов.', toastOptions);
       return false;
-    } else if (email === "") {
-      toast.error("Email is required.", toastOptions);
+    } else if (email === '') {
+      toast.error('Email обязателен для заполнения.', toastOptions);
       return false;
     }
 
     return true;
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async event => {
     event.preventDefault();
     if (handleValidation()) {
       const { email, username, password } = values;
@@ -79,7 +70,7 @@ export default function Register() {
           process.env.REACT_APP_LOCALHOST_KEY,
           JSON.stringify(data.user)
         );
-        navigate("/");
+        navigate('/');
       }
     }
   };
@@ -87,38 +78,38 @@ export default function Register() {
   return (
     <>
       <FormContainer>
-        <form action="" onSubmit={(event) => handleSubmit(event)}>
+        <form action="" onSubmit={event => handleSubmit(event)}>
           <div className="brand">
-            <img src={Logo} alt="logo" />
-            <h1>snappy</h1>
+            <h1>Go</h1>
+            <h1>Chat</h1>
           </div>
           <input
             type="text"
-            placeholder="Username"
+            placeholder="Никнейм"
             name="username"
-            onChange={(e) => handleChange(e)}
+            onChange={e => handleChange(e)}
           />
           <input
             type="email"
             placeholder="Email"
             name="email"
-            onChange={(e) => handleChange(e)}
+            onChange={e => handleChange(e)}
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Пароль"
             name="password"
-            onChange={(e) => handleChange(e)}
+            onChange={e => handleChange(e)}
           />
           <input
             type="password"
-            placeholder="Confirm Password"
+            placeholder="Повторите пароль"
             name="confirmPassword"
-            onChange={(e) => handleChange(e)}
+            onChange={e => handleChange(e)}
           />
-          <button type="submit">Create User</button>
+          <button type="submit">Создать</button>
           <span>
-            Already have an account ? <Link to="/login">Login.</Link>
+            Уже есть аккаунт? ? <Link to="/login">Войти</Link>
           </span>
         </form>
       </FormContainer>
